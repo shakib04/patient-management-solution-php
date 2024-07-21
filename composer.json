@@ -1,0 +1,21 @@
+{
+    "name": "vendor/patient-management-solution",
+    "description": "A Project for Managing Doctor's patient",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PatientManagementSolution\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "shakibul",
+            "email": "mdshakibulalam@gmail.com"
+        }
+    ],
+    "require": {
+      "ext-mysqli": "*",
+      "ext-mysql_xdevapi": "*"
+    }
+}
