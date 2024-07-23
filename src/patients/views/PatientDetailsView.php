@@ -1,8 +1,6 @@
 <?php
 require_once "../../../vendor/autoload.php";
 
-use PatientManagementSolution\hospitals\HospitalController;
-use PatientManagementSolution\hospitals\HospitalModel;
 use PatientManagementSolution\patients\controller\PatientController;
 use PatientManagementSolution\patients\PatientModel;
 use PatientManagementSolution\surgeries\SurgeryController;
@@ -10,6 +8,7 @@ use PatientManagementSolution\surgeries\SurgeryDetailsController;
 
 $patientController = new PatientController();
 $surgeryController = new SurgeryController();
+$surgeryDetailsController = new SurgeryDetailsController();
 $patientModel = new PatientModel();
 if (isset($_GET['patientId'])) {
     $patient = $patientController->findById($_GET['patientId']);
@@ -18,58 +17,190 @@ if (isset($_GET['patientId'])) {
     echo "patient id is missing";
     die();
 }
-?>
 
-<table>
-    <tr>
-        <td>Name</td>
-        <td><?= htmlspecialchars($patient[$patientModel->name]) ?></td>
-    </tr>
-    <tr>
-        <td>Gender</td>
-        <td><?= htmlspecialchars($patient[$patientModel->gender]) ?></td>
-    </tr>
-    <tr>
-        <td>Mobile Number</td>
-        <td><?= htmlspecialchars($patient[$patientModel->mobile_number]) ?></td>
-    </tr>
-    <tr>
-        <td>Address</td>
-        <td><?= htmlspecialchars($patient[$patientModel->address]) ?></td>
-    </tr>
-</table>
-
-<?php require_once "../../surgeries/views/SurgeryAddView.php" ?>
-
-<h3><?= htmlspecialchars($patient[$patientModel->name]) ?>'s all surgery </h3>
-
-<?php
-if (isset($_POST['save_surgery_details'])) {
-    $surgeryDetailsController = new SurgeryDetailsController();
-    $surgeryDetailsController->create($_POST['surgery_id']);
+if (isset($_GET['delete']) && $_GET['delete'] == "true"
+    && isset($_GET['surgeryDetailsId'])) {
+    $surgeryDetailsController->delete($_GET['surgeryDetailsId']);
 }
+$deleteSurgery = isset($_GET['surgeryId']) &&
+    isset($_GET['deleteSurgery']) && $_GET['deleteSurgery'] == 'true';
+
+if ($deleteSurgery) {
+    $surgeryController->delete($_GET['surgeryId']);
+    header("location:?patientId=$_GET[patientId]");
+}
+
 ?>
 
-<div>
-    <p>Surgery Name: <?= htmlspecialchars($surgeryList[0]['name']) ?> </p>
-    <form method="post" enctype="multipart/form-data">
-        <input type="text" name="surgery_id" value="<?= htmlspecialchars($surgeryList[0]['id']) ?>" readonly> <br>
-        <select name="hospital_id">
-            <option>select hospital</option>
-            <?php
-            $hospitalController = new HospitalController();
-            $hospitalModal = new HospitalModel();
-            $data = $hospitalController->getAll();
-            foreach ($data as $row):?>
-                <option value="<?= htmlspecialchars($row[$hospitalModal->id]) ?>">
-                    <?= htmlspecialchars($row[$hospitalModal->code]) ?>
-                    - <?= htmlspecialchars($row[$hospitalModal->name]) ?>
-                </option>
-            <?php endforeach; ?>
-        </select> <br>
-        <input type="date" placeholder="select date" name="date"> <br>
-        <textarea placeholder="Remarks" name="remarks"></textarea><br>
-        <input type="file" name="before_images" placeholder="before images" accept="image/*"> <br>
-        <input type="submit" name="save_surgery_details" value="Save">
-    </form>
-</div>
+<html lang="en">
+<?php require_once "../../headers/head.php"; ?>
+
+<body>
+<?php require_once "../../headers/nav-bar.php" ?>
+
+<main id="main" class="main">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Patient Details</h5>
+
+            <!-- Table with stripped rows -->
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <td><?= htmlspecialchars($patient[$patientModel->name]) ?></td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Mobile Number</td>
+                    <td><?= htmlspecialchars($patient[$patientModel->mobile_number]) ?></td>
+                </tr>
+                <tr>
+                    <th>Gender</th>
+                    <td><?= htmlspecialchars($patient[$patientModel->gender]) ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">Age</th>
+                    <td><?= date_diff(new DateTime($patient['date_of_birth']), new DateTime())->y ?></td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td><?= htmlspecialchars($patient[$patientModel->address]) ?></td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+
+        </div>
+    </div>
+
+    <!-- Basic Modal -->
+    <div class="modal fade" id="basicModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Basic Modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="surgeryId"></div>
+                    Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit.
+                    Placeat
+                    autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet
+                    incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Basic Modal-->
+
+    <!--    --><?php //if ($surgeryUpdate): ?>
+    <!--        --><?php //require_once "../../surgeries/views/SurgeryAddView.php" ?>
+    <!--    --><?php //endif; ?>
+
+    <h3><?= htmlspecialchars($patient[$patientModel->name]) ?>'s all surgery </h3>
+    <?php foreach ($surgeryList
+
+                   as $surgeryRow): ?>
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Surgery Details: </h5>
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <td><?= htmlspecialchars($surgeryRow['name']) ?></td>
+                                </tr>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <td>
+                                        <a class="btn btn-secondary btn-sm"
+                                           href="../../surgeries/views/SurgeryAddView.php?patientId=<?= $_GET['patientId'] ?>&updateSurgery=true&surgeryId=<?= $surgeryRow['id'] ?>">
+                                            Update
+                                        </a>
+                                        <?php $surgeryDetailsList = $surgeryDetailsController->findBySurgeryId($surgeryRow['id']); ?>
+                                        <?php if (!$surgeryDetailsList): ?>
+                                            <a class="btn btn-danger btn-sm"
+                                               href="?patientId=<?= $_GET['patientId'] ?>&deleteSurgery=true&surgeryId=<?= $surgeryRow['id'] ?>">
+                                                Delete
+                                            </a>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                </thead>
+                            </table>
+
+                            <a href="PatientSurgeryDetailsAddView.php?patientId=<?= $_GET['patientId'] ?>&surgeryId=<?= $surgeryRow['id'] ?>"
+                               class="btn btn-primary">
+                                Add History for `<?= htmlspecialchars($surgeryRow['name']) ?>`
+                            </a>
+                            <h5 class="card-title">::Histories of <?= $surgeryRow['name'] ?>::</h5>
+                            <!-- Table with stripped rows -->
+                            <table class="table datatable">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Remarks</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <?php foreach ($surgeryDetailsList as $surgeryDetailsRow): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($surgeryDetailsRow['date']) ?></td>
+                                        <td><?= htmlspecialchars($surgeryDetailsRow['remarks']) ?></td>
+                                        <td>
+                                            <a class="btn btn-primary"
+                                               href="PatientDetailsView.php?patientId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Details</a>
+                                            <a class="btn btn-secondary"
+                                               href="PatientRegistrationView.php?id=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Edit</a>
+                                            <a class="btn btn-danger"
+                                               href="?patientId=<?= $_GET['patientId'] ?>&delete=true&surgeryDetailsId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Delete</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <?php endforeach; ?>
+
+    <a class="btn btn-primary"
+       href="../../surgeries/views/SurgeryAddView.php?patientId=<?= $_GET['patientId'] ?>">
+        Create New Surgery
+    </a>
+    <!--    --><?php //if (!$surgeryUpdate): ?>
+    <!--        --><?php //require_once "../../surgeries/views/SurgeryAddView.php" ?>
+    <!--    --><?php //endif; ?>
+
+</main>
+
+<?php require_once "../../footers/footer.php" ?>
+
+<script>
+    function setSurgeryDetails(param) {
+        console.log(param)
+        document.getElementById("surgeryId").innerText = param;
+    }
+</script>
+</body>
+</html>
+
+

@@ -8,8 +8,8 @@ class SurgeryDetailsController
 {
     public function create($surgery_id)
     {
-//        echo MySQLConnection::getConnection()
-//            ->execute($this->insert_sql($surgery_id));
+        echo MySQLConnection::getConnection()
+            ->execute($this->insert_sql($surgery_id));
         echo time() . "<br>";
         sleep(1);
         echo time();
@@ -17,6 +17,7 @@ class SurgeryDetailsController
             shell_exec("mkdir \"../../files/surgeries/$surgery_id\"");
         }
         shell_exec("chmod 777 -R \"../../files/surgeries/\"");
+        header("location:PatientDetailsView.php?patientId=$_GET[patientId]");
     }
 
     function deleteFile($surgery_details_id)
@@ -42,9 +43,10 @@ class SurgeryDetailsController
         return false;
     }
 
-    public function findBySurgeryId($surgery_id)
+    public function findBySurgeryId($surgery_id): array
     {
-
+        return MySQLConnection::getConnection()
+            ->getColumnsValue("select * from surgery_details where surgery_id = $surgery_id");
     }
 
     public function findById($surgery_details_id)
@@ -61,7 +63,9 @@ class SurgeryDetailsController
 
     public function delete($id)
     {
-
+        MySQLConnection::getConnection()
+            ->execute("DELETE FROM surgery_details where id = $id;");
+        header("location:PatientDetailsView.php?patientId=$_GET[patientId]");
     }
 
     private function insert_sql($surgery_id): string
@@ -74,6 +78,6 @@ class SurgeryDetailsController
 
         return "INSERT INTO surgery_details (surgery_id, hospital_id, 
                              remarks, date, surgery_type, domain_status)
-                VALUES ($surgery_id, $hospital_id, '$remarks', '$date', $surgery_type, 1);";
+                VALUES ($surgery_id, $_POST[hospital_id], '$remarks', '$date', $surgery_type, 1);";
     }
 }

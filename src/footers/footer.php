@@ -37,5 +37,16 @@
     function navActive(id) {
         document.getElementById(id).className = "active";
     }
+
+    function ageCalculator(dob) {
+        let year = new Date().getFullYear() - new Date(dob).getFullYear();
+        const month = new Date().getMonth() - new Date(dob).getMonth();
+        // if (month > 6) {
+        //     year++;
+        // } else if (month < 3) {
+        //     year--;
+        // }
+        return year;
+    }
 </script>
 

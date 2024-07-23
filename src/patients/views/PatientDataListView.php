@@ -61,9 +61,11 @@ require_once "../../headers/head.php"; ?>
                                     <td><?= htmlspecialchars($row['name']) ?></td>
                                     <td><?= htmlspecialchars($row['gender']) ?></td>
                                     <td><?= htmlspecialchars($row['address']) ?></td>
-                                    <td>21</td>
+                                    <td><?= date_diff(new DateTime($row['date_of_birth']), new DateTime())->y ?></td>
                                     <td><?= htmlspecialchars($row['mobile_number']) ?></td>
                                     <td>
+                                        <a class="btn btn-primary"
+                                           href="PatientDetailsView.php?patientId=<?= htmlspecialchars($row['id']) ?>">Details</a>
                                         <a class="btn btn-secondary"
                                            href="PatientRegistrationView.php?id=<?= htmlspecialchars($row['id']) ?>">Edit</a>
                                     </td>
