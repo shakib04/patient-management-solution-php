@@ -7,3 +7,14 @@ alter table surgery_details
 
 alter table patients
     add date_of_birth date null;
+
+alter table surgery_details
+    modify date date not null;
+
+create table file_upload
+(
+    id   int auto_increment,
+    path varchar(250) not null,
+    constraint file_upload_pk
+        primary key (id)
+);

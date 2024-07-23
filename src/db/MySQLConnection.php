@@ -8,9 +8,14 @@ use RuntimeException;
 class MySQLConnection
 {
 
+    private static $execution = null;
+
     public static function getConnection(): MySQLConnection
     {
-        return new MySQLConnection();
+        if (self::$execution == null) {
+            self::$execution = new MySQLConnection();
+        }
+        return self::$execution;
     }
 
     public function connect(): mysqli
@@ -56,7 +61,7 @@ class MySQLConnection
             echo "<ol>";
             echo "<li>failed to execute, sql: <em><strong>" . $sql . "</strong></em></li>";
             echo "<li>" . $ex->getMessage() . "</li>";
-            echo ("<li style='overflow: scroll'>Exception details: <pre>$ex</pre></li>");
+            echo("<li style='overflow: scroll'>Exception details: <pre>$ex</pre></li>");
             echo "</ol>";
             die();
         }
@@ -65,10 +70,7 @@ class MySQLConnection
     public function getColumnsValue($sql): array
     {
         $data = [];
-        $connection = $this->connect();
-        $result = mysqli_query($connection, $sql);
-        mysqli_close($connection);
-
+        $result = $this->execute($sql);
         while ($row = mysqli_fetch_assoc($result)) {
             $data[] = $row;
         }

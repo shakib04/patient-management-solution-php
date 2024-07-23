@@ -163,9 +163,9 @@ if ($deleteSurgery) {
                                         <td><?= htmlspecialchars($surgeryDetailsRow['remarks']) ?></td>
                                         <td>
                                             <a class="btn btn-primary"
-                                               href="PatientDetailsView.php?patientId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Details</a>
+                                               href="../../surgeries/views/SurgeryDetailsIndividualView.php?patientId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>&surgeryDetailsId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Details</a>
                                             <a class="btn btn-secondary"
-                                               href="PatientRegistrationView.php?id=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Edit</a>
+                                               href="PatientSurgeryDetailsAddView.php?patientId=<?= $_GET['patientId'] ?>&surgeryId=<?= $surgeryRow['id'] ?>&surgeryDetailsId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Edit</a>
                                             <a class="btn btn-danger"
                                                href="?patientId=<?= $_GET['patientId'] ?>&delete=true&surgeryDetailsId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Delete</a>
                                         </td>

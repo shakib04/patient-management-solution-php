@@ -18,6 +18,10 @@ if (isset($_POST['save_surgery_details'])) {
     $surgeryDetailsController->create($_POST['surgery_id']);
 }
 
+if (isset($_POST['updateSurgeryDetails'])) {
+    $surgeryDetailsController->update($_GET['surgeryDetailsId']);
+}
+
 if (!isset($_GET['surgeryId'])) {
     echo "Surgery id not provided";
     die();
@@ -26,6 +30,12 @@ if (!isset($_GET['surgeryId'])) {
 if (!isset($_GET['patientId'])) {
     echo "Patient id not provided";
     die();
+}
+
+$update = isset($_GET['surgeryDetailsId']);
+if ($update) {
+    $surgeryDetailsId = $_GET['surgeryDetailsId'];
+    $surgeryDetails = $surgeryDetailsController->findById($surgeryDetailsId);
 }
 
 $patient = $patientController->findById($_GET['patientId']);
@@ -44,7 +54,7 @@ $hospitalList = $hospitalController->getAll();
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>New Patient Registration</h1>
+        <h1>Surgery History</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -60,7 +70,9 @@ $hospitalList = $hospitalController->getAll();
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Add Surgery History for: <?= $patient['name'] ?></h5>
+                        <h5 class="card-title">
+                            <?= $update ? 'Update' : 'Add' ?>
+                            Surgery History for: <?= $patient['name'] ?></h5>
 
                         <!-- General Form Elements -->
                         <form method="post" enctype="multipart/form-data">
@@ -85,11 +97,13 @@ $hospitalList = $hospitalController->getAll();
                                 <div class="col-sm-10">
                                     <select class="form-select" aria-label="Default select example"
                                             name="hospital_id">
-                                        <option selected disabled>----Select Hospital----</option>
+                                        <option <?= $update ? '' : 'selected' ?> disabled>----Select Hospital----
+                                        </option>
                                         <?php foreach ($hospitalList
 
                                         as $hospital) : ?>
-                                        <option value="<?= htmlspecialchars($hospital[$hospitalModal->id]) ?>">
+                                        <option <?= $update && $hospital[$hospitalModal->id] == $surgeryDetails['hospital_id'] ? 'selected' : '' ?>
+                                                value="<?= htmlspecialchars($hospital[$hospitalModal->id]) ?>">
                                             <?= htmlspecialchars($hospital[$hospitalModal->code]) ?>
                                             - <?= htmlspecialchars($hospital[$hospitalModal->name]) ?>
                                             <?php endforeach; ?>
@@ -100,7 +114,8 @@ $hospitalList = $hospitalController->getAll();
                             <div class="row mb-3">
                                 <label for="inputDate" class="col-sm-2 col-form-label">Date of Surgery</label>
                                 <div class="col-sm-10">
-                                    <input type="date" name="date" class="form-control">
+                                    <input type="date" required value="<?= $surgeryDetails['date'] ?>" name="date"
+                                           class="form-control">
                                 </div>
                             </div>
 
@@ -108,29 +123,41 @@ $hospitalList = $hospitalController->getAll();
                                 <label for="inputPassword" class="col-sm-2 col-form-label">Remarks</label>
                                 <div class="col-sm-10">
                                     <textarea class="form-control" style="height: 100px"
-                                              placeholder="Remarks" name="remarks"></textarea>
+                                              placeholder="Remarks"
+                                              name="remarks"><?= $surgeryDetails['remarks'] ?></textarea>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label for="inputNumber" class="col-sm-2 col-form-label"> Image (Before Surgery)</label>
+                                <label for="inputNumber" class="col-sm-2 col-form-label"> Image (Before
+                                    Surgery)</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="file" id="formFile" accept="image/*">
+                                    <input class="form-control" name="before_image" type="file" id="formFile" accept="image/*">
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <label for="inputNumber" class="col-sm-2 col-form-label"> Image (After Surgery)</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" type="file" id="formFile" accept="image/*">
+                            <?php if (!$update): ?>
+
+
+                                <div class="row mb-3">
+                                    <label for="inputNumber" class="col-sm-2 col-form-label"> Image (After
+                                        Surgery)</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="file" id="formFile" accept="image/*">
+                                    </div>
                                 </div>
-                            </div>
+                            <?php endif; ?>
 
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label"></label>
                                 <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary" name="save_surgery_details">
-                                        Save
+                                    <a class="btn btn-secondary"
+                                       href="PatientDetailsView.php?patientId=<?= $_GET['patientId'] ?>&surgeryId=<?= $_GET['surgeryId'] ?>">
+                                        Back
+                                    </a>
+                                    <button type="submit" class="btn btn-primary"
+                                            name="<?= $update ? 'updateSurgeryDetails' : 'save_surgery_details' ?>">
+                                        <?= $update ? 'Update' : 'Create' ?>
                                     </button>
                                 </div>
                             </div>
