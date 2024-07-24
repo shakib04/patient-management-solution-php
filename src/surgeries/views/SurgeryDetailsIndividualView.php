@@ -19,12 +19,23 @@ $fileUploadController = new FileUploadController();
 $surgeryDetails = $surgeryDetailsController->findById($_GET['surgeryDetailsId']);
 $surgery = $surgeryController->findById($surgeryDetails['surgery_id']);
 $hospital = $hospitalController->findById($surgeryDetails['hospital_id']);
-$imagePaths = $fileUploadController->getPathArray($surgeryDetails['before_surgery_images_csv']);
+$beforeImagePaths = $fileUploadController->getPathArray($surgeryDetails['before_surgery_images_csv']);
+$afterImagePaths = $fileUploadController->getPathArray($surgeryDetails['after_surgery_images_csv']);
 
 
 if (isset($_POST['beforeUpload'])) {
     $surgeryDetailsController->addFile($_GET['surgeryDetailsId']);
     header("location:SurgeryDetailsIndividualView.php?patientId=$_GET[patientId]&surgeryDetailsId=$_GET[surgeryDetailsId]");
+}
+
+if (isset($_POST['afterUpload'])) {
+    $surgeryDetailsController->addFile($_GET['surgeryDetailsId'], false);
+    header("location:SurgeryDetailsIndividualView.php?patientId=$_GET[patientId]&surgeryDetailsId=$_GET[surgeryDetailsId]");
+}
+
+if (isset($_GET['deleteFile'])) {
+    $surgeryDetailsController->deleteFile($_GET['fileId'], $_GET['surgeryDetailsId'], $fileUploadController);
+    header("location:?patientId=$_GET[patientId]&surgeryDetailsId=$_GET[surgeryDetailsId]");
 }
 
 
@@ -80,10 +91,14 @@ if (isset($_POST['beforeUpload'])) {
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Images Before Surgery</h5>
-            <!--            --><?php //= var_dump($imagePaths) ?>
-            <div>
-                <?php foreach ($imagePaths as $imagePath): ?>
-                    <img src="<?= htmlspecialchars($imagePath['path']) ?>" width="150" height="150" alt="">
+            <div class="d-flex">
+                <?php foreach ($beforeImagePaths as $imagePath): ?>
+                    <div class="d-flex flex-column px-1">
+                        <img src="<?= htmlspecialchars($imagePath['path']) ?>" width="200" height="200" alt=""
+                             class="pb-1">
+                        <a href='<?= "?deleteFile=true&fileId=$imagePath[id]&patientId=$_GET[patientId]&surgeryDetailsId=$_GET[surgeryDetailsId]" ?>'
+                           class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
                 <?php endforeach; ?>
             </div>
 
@@ -94,6 +109,29 @@ if (isset($_POST['beforeUpload'])) {
                     </div>
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-primary" name="beforeUpload">Upload</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Images After Surgery</h5>
+            <div>
+                <?php foreach ($afterImagePaths as $imagePath): ?>
+                    <img src="<?= htmlspecialchars($imagePath['path']) ?>" width="150" height="150" alt="">
+                <?php endforeach; ?>
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="row my-3">
+                    <div class="col-sm-10">
+                        <input class="form-control" type="file" name="after_image" id="formFile" accept="image/*">
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary" name="afterUpload">Upload</button>
                     </div>
                 </div>
             </form>

@@ -16,29 +16,49 @@ class SurgeryDetailsController
         $this->moveToPatientDetailsView();
     }
 
-    public function addFile($id)
+    public function addFile($id, $isBefore = true)
     {
-        $path = $this->fileUpload($_FILES['before_image']);
+        $path = $this->fileUpload($_FILES[$isBefore ? 'before_image' : 'after_image']);
         if ($path) {
             $fileUploadController = new FileUploadController();
             $file_upload_id = $fileUploadController->create($path);
-            $existingIdCSV = $this->findById($id)['before_surgery_images_csv'];
+            $existingIdCSV = $this->findById($id)[$isBefore ? 'before_surgery_images_csv' : 'after_surgery_images_csv'];
             if ($existingIdCSV) {
                 $existingIdCSV .= ",$file_upload_id";
             } else {
                 $existingIdCSV = $file_upload_id;
             }
 
+            $sql = $isBefore ?
+                "update surgery_details set before_surgery_images_csv = '$existingIdCSV' where id = $id" :
+                "update surgery_details set after_surgery_images_csv = '$existingIdCSV' where id = $id";
             return MySQLConnection::getConnection()
-                ->execute("update surgery_details set before_surgery_images_csv = '$existingIdCSV' where id = $id");
+                ->execute($sql);
         }
         return false;
     }
 
-    function deleteFile($surgery_details_id)
+    function deleteFile($fileId, $surgery_details_id, FileUploadController $fileUploadController, $isBefore = true)
     {
-        $data = "abc,bcd,dff";
-        var_dump(str_getcsv($data));
+//        $data = "abc,bcd,dff";
+//        var_dump(str_getcsv($data));
+        $surgery_details = $this->findById($surgery_details_id);
+
+        if ($isBefore) {
+            $fileIdCVS = $surgery_details['before_surgery_images_csv'];
+        } else {
+            $fileIdCVS = $surgery_details['after_surgery_images_csv'];
+        }
+
+        $existingIdCSV = $fileUploadController->remove_id($fileIdCVS, $fileId);
+
+        $fileUploadController->delete($fileId);
+
+        $sql = $isBefore ?
+            "update surgery_details set before_surgery_images_csv = '$existingIdCSV' where id = $surgery_details_id" :
+            "update surgery_details set after_surgery_images_csv = '$existingIdCSV' where id = $surgery_details_id";
+        return MySQLConnection::getConnection()
+            ->execute($sql);
     }
 
     function createSurgeryFileDir($surgery_id)
