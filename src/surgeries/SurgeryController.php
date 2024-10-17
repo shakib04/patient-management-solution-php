@@ -43,4 +43,10 @@ class SurgeryController
         MySQLConnection::getConnection()
             ->execute("delete from surgery where id = $surgeryId");
     }
+
+    public function findAll(): array
+    {
+       return MySQLConnection::getConnection()
+            ->getColumnsValue("select distinct name from surgery");
+    }
 }

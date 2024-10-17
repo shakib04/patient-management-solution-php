@@ -25,8 +25,6 @@ if ($updateSurgery) {
 
 <html lang="en">
 <?php require_once "../../headers/head.php"; ?>
-
-
 <body>
 
 <?php require_once "../../headers/nav-bar.php" ?>
@@ -46,8 +44,9 @@ if ($updateSurgery) {
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item"><a
-                            href="../../patients/views/PatientDetailsView.php?patientId=11">Patients</a></li>
-                <li class="breadcrumb-item active">Surgery</li>
+                            href="../../patients/views/PatientDetailsView.php?patientId=<?= $_GET['patientId'] ?>">Patient
+                        Details</a></li>
+                <li class="breadcrumb-item active"><?= $updateSurgery ? 'Update' : 'Create' ?> Surgery</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->

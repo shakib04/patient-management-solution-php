@@ -120,10 +120,10 @@ if ($deleteSurgery) {
                                 <thead>
                                 <tr>
                                     <th scope="col">Name</th>
-                                    <td><?= htmlspecialchars($surgeryRow['name']) ?></td>
+                                    <th>Action</th>
                                 </tr>
                                 <tr>
-                                    <th>&nbsp;</th>
+                                    <td><?= htmlspecialchars($surgeryRow['name']) ?></td>
                                     <td>
                                         <a class="btn btn-secondary btn-sm"
                                            href="../../surgeries/views/SurgeryAddView.php?patientId=<?= $_GET['patientId'] ?>&updateSurgery=true&surgeryId=<?= $surgeryRow['id'] ?>">
@@ -132,7 +132,7 @@ if ($deleteSurgery) {
                                         <?php $surgeryDetailsList = $surgeryDetailsController->findBySurgeryId($surgeryRow['id']); ?>
                                         <?php if (!$surgeryDetailsList): ?>
                                             <a class="btn btn-danger btn-sm"
-                                               href="?patientId=<?= $_GET['patientId'] ?>&deleteSurgery=true&surgeryId=<?= $surgeryRow['id'] ?>">
+                                               onclick=deleteConfirmation("?patientId=<?= $_GET['patientId'] ?>&deleteSurgery=true&surgeryId=<?= $surgeryRow['id'] ?>")>
                                                 Delete
                                             </a>
                                         <?php endif; ?>
@@ -152,7 +152,7 @@ if ($deleteSurgery) {
                                 <tr>
                                     <th>Date</th>
                                     <th>Remarks</th>
-                                    <th></th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -162,12 +162,12 @@ if ($deleteSurgery) {
                                         <td><?= htmlspecialchars($surgeryDetailsRow['date']) ?></td>
                                         <td><?= htmlspecialchars($surgeryDetailsRow['remarks']) ?></td>
                                         <td>
-                                            <a class="btn btn-primary"
-                                               href="../../surgeries/views/SurgeryDetailsIndividualView.php?patientId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>&surgeryDetailsId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Details</a>
-                                            <a class="btn btn-secondary"
+                                            <a class="btn btn-sm btn-primary"
+                                               href="../../surgeries/views/SurgeryDetailsIndividualView.php?patientId=<?= htmlspecialchars($patient[$patientModel->id]) ?>&surgeryDetailsId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Details</a>
+                                            <a class="btn btn-sm btn-secondary"
                                                href="PatientSurgeryDetailsAddView.php?patientId=<?= $_GET['patientId'] ?>&surgeryId=<?= $surgeryRow['id'] ?>&surgeryDetailsId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Edit</a>
-                                            <a class="btn btn-danger"
-                                               href="?patientId=<?= $_GET['patientId'] ?>&delete=true&surgeryDetailsId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>">Delete</a>
+                                            <a class="btn btn-sm btn-danger"
+                                               onclick=deleteConfirmation("?patientId=<?= $_GET['patientId'] ?>&delete=true&surgeryDetailsId=<?= htmlspecialchars($surgeryDetailsRow['id']) ?>")>Delete</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

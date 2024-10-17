@@ -19,9 +19,13 @@ function protocol(): string
         ? "https://" : "http://";
 }
 
+
 define("ROOT_URL", protocol() . $_SERVER['HTTP_HOST'] . "/" . getAlias() . "/");
 //const CDN_LINK = "https://shakib04.github.io/nice-admin-bootstrap-template/";
-const CDN_LINK = "http://localhost/NiceAdmin/";
+define("CDN_LINK",
+    $_SERVER['HTTP_HOST'] == "localhost" ?
+        "http://localhost/NiceAdmin/" :
+        "https://shakib04.github.io/nice-admin-bootstrap-template/");
 ?>
 
 <head>
@@ -33,20 +37,20 @@ const CDN_LINK = "http://localhost/NiceAdmin/";
         $pageTitle = '';
         echo $pageTitle; ?> Patient Management Solution</title>
     <!--    <link href="../static/css/styles.css" rel="stylesheet" />-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"-->
-<!--          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"-->
-<!--            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"-->
-<!--            crossorigin="anonymous"></script>-->
+    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"-->
+    <!--          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"-->
+    <!--            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"-->
+    <!--            crossorigin="anonymous"></script>-->
 
     <!-- Favicons -->
     <link href="<?php echo CDN_LINK ?>assets/img/favicon.png" rel="icon">
     <link href="<?php echo CDN_LINK ?>assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
-<!--    <link href="https://fonts.gstatic.com" rel="preconnect">-->
-<!--    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"-->
-<!--          rel="stylesheet">-->
+    <!--    <link href="https://fonts.gstatic.com" rel="preconnect">-->
+    <!--    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"-->
+    <!--          rel="stylesheet">-->
 
     <!-- Vendor CSS Files -->
     <link href="<?php echo CDN_LINK ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">

@@ -1,3 +1,6 @@
+alter table surgery
+    add name varchar(255) not null;
+
 alter table surgery_details
     drop foreign key surgery_details_surgery_id_fk;
 

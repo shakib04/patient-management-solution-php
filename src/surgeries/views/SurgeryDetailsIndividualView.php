@@ -38,6 +38,7 @@ if (isset($_GET['deleteFile'])) {
     header("location:?patientId=$_GET[patientId]&surgeryDetailsId=$_GET[surgeryDetailsId]");
 }
 
+$imageSize = "350";
 
 ?>
 
@@ -90,13 +91,17 @@ if (isset($_GET['deleteFile'])) {
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Images Before Surgery</h5>
+            <h5 class="card-title">Before Surgery</h5>
             <div class="d-flex">
                 <?php foreach ($beforeImagePaths as $imagePath): ?>
                     <div class="d-flex flex-column px-1">
-                        <img src="<?= htmlspecialchars($imagePath['path']) ?>" width="200" height="200" alt=""
+                        <img src="<?= htmlspecialchars($imagePath['path']) ?>"
+                             width="<?= $imageSize ?>"
+                             height="<?= $imageSize ?>"
+                             alt=""
+                             onclick="openInWindow('<?= $imagePath['path'] ?>')"
                              class="pb-1">
-                        <a href='<?= "?deleteFile=true&fileId=$imagePath[id]&patientId=$_GET[patientId]&surgeryDetailsId=$_GET[surgeryDetailsId]" ?>'
+                        <a onclick='deleteConfirmation("<?= "?deleteFile=true&fileId=$imagePath[id]&patientId=$_GET[patientId]&surgeryDetailsId=$_GET[surgeryDetailsId]" ?>")'
                            class="btn btn-outline-danger btn-sm">Delete</a>
                     </div>
                 <?php endforeach; ?>
@@ -118,10 +123,17 @@ if (isset($_GET['deleteFile'])) {
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Images After Surgery</h5>
-            <div>
+            <h5 class="card-title">After Surgery</h5>
+            <div class="d-flex">
                 <?php foreach ($afterImagePaths as $imagePath): ?>
-                    <img src="<?= htmlspecialchars($imagePath['path']) ?>" width="150" height="150" alt="">
+                    <div class="d-flex flex-column px-1">
+                        <img src="<?= htmlspecialchars($imagePath['path']) ?>" width="<?= $imageSize ?>"
+                             height="<?= $imageSize ?>" alt=""
+                             onclick="window.open('<?= $imagePath['path'] ?>')"
+                             class="pb-1">
+                        <a onclick=deleteConfirmation('<?= "?deleteFile=true&fileId=$imagePath[id]&patientId=$_GET[patientId]&surgeryDetailsId=$_GET[surgeryDetailsId]" ?>')
+                           class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
                 <?php endforeach; ?>
             </div>
 
@@ -147,5 +159,6 @@ if (isset($_GET['deleteFile'])) {
         document.getElementById("surgeryId").innerText = param;
     }
 </script>
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
-        &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>Patient Management System</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
         <!-- All the links in the footer should remain intact. -->
@@ -29,6 +29,21 @@
 <script src="<?php echo CDN_LINK ?>assets/js/main.js"></script>
 
 <script>
+    function deleteConfirmation(link) {
+        console.log(`request for delete = ${link}`)
+        const confirmation = confirm("Are you sure?");
+
+        if (confirmation) {
+            window.location.href = link;
+        } else {
+            console.log("Link not followed."); // Or perform another action here
+        }
+    }
+
+    function openInWindow(link) {
+        window.open(link, '_blank')
+    }
+
     function removeCollapsed(id) {
         document.getElementById(id).className =
             document.getElementById(id).className.replace("collapsed", "")

@@ -4,14 +4,15 @@
     <div class="d-flex align-items-center justify-content-between">
         <a href="index.html" class="logo d-flex align-items-center">
             <img src="<?php echo CDN_LINK?>assets/img/logo.png" alt="">
-            <span class="d-none d-lg-block">PMS</span>
+            <span class="d-none d-lg-block" style="font-size: 16px">Patient Management System</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <form class="search-form d-flex align-items-center" method="GET"
+              action="<?=ROOT_URL?>/src/filters/views/FilterView.php?surgery_name=<?=$_GET['surgery_name']?>">
+            <input type="text" name="surgery_name" placeholder="Search" title="Enter search keyword">
             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
         </form>
     </div><!-- End Search Bar -->

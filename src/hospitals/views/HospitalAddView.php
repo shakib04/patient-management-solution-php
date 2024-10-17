@@ -31,11 +31,11 @@ if (isset($_GET['id'])) {
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>New Hospital Registration</h1>
+        <h1>Add New Hospital</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item">Hospital</li>
+                <li class="breadcrumb-item"><a href="<?=ROOT_URL?>/src/hospitals/views/HospitalListView.php">Hospitals</a></li>
                 <li class="breadcrumb-item active">
                     <?php echo isset($_GET['id']) ?
                         'Edit Hospital' : 'Add New Hospital' ?>

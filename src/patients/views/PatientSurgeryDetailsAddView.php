@@ -128,34 +128,32 @@ $hospitalList = $hospitalController->getAll();
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <label for="inputNumber" class="col-sm-2 col-form-label"> Image (Before
-                                    Surgery)</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" name="before_image" type="file" id="formFile" accept="image/*">
-                                </div>
-                            </div>
+<!--                            <div class="row mb-3">-->
+<!--                                <label for="inputNumber" class="col-sm-2 col-form-label"> Image (Before-->
+<!--                                    Surgery)</label>-->
+<!--                                <div class="col-sm-10">-->
+<!--                                    <input class="form-control" name="before_image" type="file" id="formFile" accept="image/*">-->
+<!--                                </div>-->
+<!--                            </div>-->
 
-                            <?php if (!$update): ?>
-
-
-                                <div class="row mb-3">
-                                    <label for="inputNumber" class="col-sm-2 col-form-label"> Image (After
-                                        Surgery)</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="file" id="formFile" accept="image/*">
-                                    </div>
-                                </div>
-                            <?php endif; ?>
+<!--                            --><?php //if (!$update): ?>
+<!--                                <div class="row mb-3">-->
+<!--                                    <label for="inputNumber" class="col-sm-2 col-form-label"> Image (After-->
+<!--                                        Surgery)</label>-->
+<!--                                    <div class="col-sm-10">-->
+<!--                                        <input class="form-control" type="file" id="formFile" accept="image/*">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            --><?php //endif; ?>
 
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label"></label>
                                 <div class="col-sm-10">
-                                    <a class="btn btn-secondary"
+                                    <a class="btn btn-sm btn-secondary"
                                        href="PatientDetailsView.php?patientId=<?= $_GET['patientId'] ?>&surgeryId=<?= $_GET['surgeryId'] ?>">
                                         Back
                                     </a>
-                                    <button type="submit" class="btn btn-primary"
+                                    <button type="submit" class="btn btn-sm btn-primary"
                                             name="<?= $update ? 'updateSurgeryDetails' : 'save_surgery_details' ?>">
                                         <?= $update ? 'Update' : 'Create' ?>
                                     </button>
