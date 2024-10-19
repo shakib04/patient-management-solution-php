@@ -56,7 +56,7 @@ if ($_GET['id']) {
                         </h5>
 
                         <!-- General Form Elements -->
-                        <form method="post" action="">
+                        <form method="post" action="" enctype="multipart/form-data">
                             <div class="row mb-3">
                                 <label for="inputText" class="col-sm-2 col-form-label">Patient Name</label>
                                 <div class="col-sm-10">
@@ -73,15 +73,15 @@ if ($_GET['id']) {
                                 </div>
                             </div>
 
-                            <?php if (!$_GET['id']): ?>
+<!--                            --><?php //if (!$_GET['id']): ?>
                                 <div class="row mb-3">
                                     <label for="inputNumber" class="col-sm-2 col-form-label">Patient Image
                                         Upload</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" type="file" id="formFile">
+                                        <input class="form-control" type="file" id="formFile" name="image" accept="image/*">
                                     </div>
                                 </div>
-                            <?php endif; ?>
+<!--                            --><?php //endif; ?>
 
                             <div class="row mb-3">
                                 <label for="inputDate" class="col-sm-2 col-form-label">Date of Birth</label>

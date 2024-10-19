@@ -14,10 +14,13 @@ alter table patients
 alter table surgery_details
     modify date date not null;
 
-create table file_upload
+create table if not exists file_upload
 (
     id   int auto_increment,
     path varchar(250) not null,
     constraint file_upload_pk
         primary key (id)
 );
+
+alter table patients
+    add if not exists image_path varchar(250) null;

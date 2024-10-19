@@ -7,7 +7,7 @@
             <a class="nav-link collapsed"
                href="<?= ROOT_URL ?>src/filters/views/FilterView.php">
                 <i class="bi bi-grid"></i>
-                <span>Search</span>
+                <span>Surgeries</span>
             </a>
         </li><!-- End Dashboard Nav -->
 

@@ -28,7 +28,7 @@ $input_names = [
             <label for="inputText" class="col-sm-2 col-form-label">Surgery Name</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control"
-                       placeholder="search by surgery"
+                       placeholder="Search by Surgery Name"
                        name="<?= $input_names['surgery_name'] ?>" list="surgeries_name"
                        value="<?= $_GET[$input_names['surgery_name']] ?>">
 
@@ -54,82 +54,102 @@ $input_names = [
 
     </form><!-- End General Form Elements -->
 
+    <?php
+    $filteredData = $filterController->filter($_GET[$input_names['surgery_name']]);
+    //        print_r($filteredData);die();
+    foreach ($filteredData as $row): ?>
+    <!-- Card with an image on left -->
+    <div class="card mb-3">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <figure>
+                    <?php if ($row['image_path']): ?>
+                    <img src="<?= htmlspecialchars($row['image_path']) ?>" width="350" class="img-fluid rounded-start" alt="<?= htmlspecialchars($row['patient_name']) ?>'s image">
+                    <?php else: ?>
+                    <img src="../../files/No-Image-Placeholder.png" width="200" class="img-fluid rounded-start" alt="<?= htmlspecialchars($row['patient_name']) ?>'s image">
+                    <?php endif; ?>
+                    <figcaption>Patient Image</figcaption>
+                </figure>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <p class="fs-6 badge text-bg-info">Surgery Details</p>
+                    <h5 class="card title">Name: <span class="display-6"><?= htmlspecialchars($row['surgery_name']) ?></span></h5>
+                    <p class="fs-6 badge text-bg-info">Patient Details</p>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Patient Name:</label>
+                        <div class="col-sm-10 col-lg-3">
+                            <input type="text" class="form-control" value="<?= htmlspecialchars($row['patient_name']) ?>" disabled>
+                        </div>
 
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Accordion without outline borders</h5>
+                        <label class="col-sm-2 col-form-label">Gender:</label>
+                        <div class="col-sm-10 col-lg-3">
+                            <input type="text" class="form-control" value="<?= htmlspecialchars($row['gender']) ?>" disabled>
+                        </div>
+                    </div>
 
-            <!-- Accordion without outline borders -->
-            <div class="accordion accordion-flush" id="accordionFlushExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            Accordion Item #1
-                        </button>
-                    </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Mobile Number:</label>
+                        <div class="col-sm-10 col-lg-3">
+                            <input type="text" class="form-control" value="<?= htmlspecialchars($row['mobile_number']) ?>" disabled>
+                        </div>
+                        <label class="col-sm-2 col-form-label">Age:</label>
+                        <div class="col-sm-10 col-lg-3">
+                            <input type="text" class="form-control" value="<?= date_diff(new DateTime($row['date_of_birth']), new DateTime())->y ?>" disabled>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Address:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" value="<?= htmlspecialchars($row['mobile_number']) ?>" disabled>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-primary btn-lg"
+                           href="<?=ROOT_URL?>/src/patients/views/PatientDetailsView.php?patientId=<?= htmlspecialchars($row['patient_id']) ?>">Details -></a>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                            Accordion Item #2
-                        </button>
-                    </h2>
-                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                            Accordion Item #3
-                        </button>
-                    </h2>
-                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-                    </div>
-                </div>
-            </div><!-- End Accordion without outline borders -->
-
+            </div>
         </div>
-    </div>
+    </div><!-- End Card with an image on left -->
+    <?php endforeach; ?>
 
     <!-- Table with stripped rows -->
-    <table class="table datatable">
-        <thead>
-        <tr>
-            <th>Patient Name</th>
-            <th>Surgery Name</th>
-            <th>Gender</th>
-            <th>Address</th>
-            <th>Age</th>
-            <th>Mobile Number</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        $filteredData = $filterController->filter($_GET[$input_names['surgery_name']]);
-//        print_r($filteredData);die();
-        foreach ($filteredData as $row): ?>
-            <tr>
-                <td><?= htmlspecialchars($row['patient_name']) ?></td>
-                <td><?= htmlspecialchars($row['surgery_name']) ?></td>
-                <td><?= htmlspecialchars($row['gender']) ?></td>
-                <td><?= htmlspecialchars($row['address']) ?></td>
-                <td><?= date_diff(new DateTime($row['date_of_birth']), new DateTime())->y ?></td>
-                <td><?= htmlspecialchars($row['mobile_number']) ?></td>
-                <td>
-                    <a class="btn btn-primary"
-                       href="<?=ROOT_URL?>/src/patients/views/PatientDetailsView.php?patientId=<?= htmlspecialchars($row['patient_id']) ?>">Details</a>
-                </td>
-
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+<!--    <table class="table datatable">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Patient Name</th>-->
+<!--            <th>Surgery Name</th>-->
+<!--            <th>Gender</th>-->
+<!--            <th>Address</th>-->
+<!--            <th>Age</th>-->
+<!--            <th>Mobile Number</th>-->
+<!--            <th></th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        --><?php
+//        $filteredData = $filterController->filter($_GET[$input_names['surgery_name']]);
+////        print_r($filteredData);die();
+//        foreach ($filteredData as $row): ?>
+<!--            <tr>-->
+<!--                <td>--><?php //= htmlspecialchars($row['patient_name']) ?><!--</td>-->
+<!--                <td>--><?php //= htmlspecialchars($row['surgery_name']) ?><!--</td>-->
+<!--                <td>--><?php //= htmlspecialchars($row['gender']) ?><!--</td>-->
+<!--                <td>--><?php //= htmlspecialchars($row['address']) ?><!--</td>-->
+<!--                <td>--><?php //= date_diff(new DateTime($row['date_of_birth']), new DateTime())->y ?><!--</td>-->
+<!--                <td>--><?php //= htmlspecialchars($row['mobile_number']) ?><!--</td>-->
+<!--                <td>-->
+<!--                    <a class="btn btn-primary"-->
+<!--                       href="--><?php //=ROOT_URL?><!--/src/patients/views/PatientDetailsView.php?patientId=--><?php //= htmlspecialchars($row['patient_id']) ?><!--">Details</a>-->
+<!--                </td>-->
+<!---->
+<!--            </tr>-->
+<!--        --><?php //endforeach; ?>
+<!--        </tbody>-->
+<!--    </table>-->
     <!-- End Table with stripped rows -->
 </main>
 <!-- End #main -->
