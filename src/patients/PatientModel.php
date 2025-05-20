@@ -10,4 +10,5 @@ class PatientModel
     public $address = "address";
     public $mobile_number = "mobile_number";
     public $domain_status = "domain_status";
+    public $image_path = "image_path";
 }

@@ -44,34 +44,49 @@ if ($deleteSurgery) {
         <div class="card-body">
             <h5 class="card-title">Patient Details</h5>
 
-            <!-- Table with stripped rows -->
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <td><?= htmlspecialchars($patient[$patientModel->name]) ?></td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Mobile Number</td>
-                    <td><?= htmlspecialchars($patient[$patientModel->mobile_number]) ?></td>
-                </tr>
-                <tr>
-                    <th>Gender</th>
-                    <td><?= htmlspecialchars($patient[$patientModel->gender]) ?></td>
-                </tr>
-                <tr>
-                    <th scope="row">Age</th>
-                    <td><?= date_diff(new DateTime($patient['date_of_birth']), new DateTime())->y ?></td>
-                </tr>
-                <tr>
-                    <th>Address</th>
-                    <td><?= htmlspecialchars($patient[$patientModel->address]) ?></td>
-                </tr>
-                </tbody>
-            </table>
-            <!-- End Table with stripped rows -->
+            <!-- Card with an image on top -->
+            <div class="card">
+                <div class="card-body">
+                    <figure>
+                        <?php if ($patient[$patientModel->image_path]): ?>
+                            <img src="<?= htmlspecialchars($patient[$patientModel->image_path]) ?>" width="350" class="img-thumbnail" alt="<?= htmlspecialchars($patient[$patientModel->name]) ?>'s image">
+                        <?php else: ?>
+                            <img src="../../files/No-Image-Placeholder.png" width="200" class="img-thumbnail" alt="<?= htmlspecialchars($patient[$patientModel->name]) ?>'s image">
+                        <?php endif; ?>
+                        <figcaption>Patient Image</figcaption>
+                    </figure>
+                    <!-- Table with stripped rows -->
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <td><?= htmlspecialchars($patient[$patientModel->name]) ?></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Mobile Number</td>
+                            <td><?= htmlspecialchars($patient[$patientModel->mobile_number]) ?></td>
+                        </tr>
+                        <tr>
+                            <th>Gender</th>
+                            <td><?= htmlspecialchars($patient[$patientModel->gender]) ?></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Age</th>
+                            <td><?= date_diff(new DateTime($patient['date_of_birth']), new DateTime())->y ?></td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td><?= htmlspecialchars($patient[$patientModel->address]) ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- End Table with stripped rows -->
+                </div>
+            </div><!-- End Card with an image on top -->
+
+
 
         </div>
     </div>

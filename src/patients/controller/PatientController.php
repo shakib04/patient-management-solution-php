@@ -8,8 +8,12 @@ class PatientController
 {
     public function save()
     {
+        $image_path = null;
+        if ($_FILES['image']){
+            $image_path = $this->fileUpload($_FILES['image']);
+        }
         MySQLConnection::getConnection()
-            ->execute($this->insert_sql());
+            ->execute($this->insert_sql($image_path));
     }
 
     public function getAll(): array
@@ -42,7 +46,7 @@ class PatientController
     /**
      * @return array|string|string[]
      */
-    function insert_sql()
+    function insert_sql($image_path)
     {
         $r = $_POST;
         return str_replace(
@@ -52,6 +56,7 @@ class PatientController
                 ":address",
                 ":mobile_number",
                 ":date_of_birth",
+                ":image_path",
             ],
             [
                 $r['name'],
@@ -59,11 +64,12 @@ class PatientController
                 $r['address'],
                 $r['mobile_number'],
                 $r['date_of_birth'],
+                $image_path,
             ],
             "
          INSERT INTO patients 
              (name, gender, address, mobile_number, date_of_birth, image_path, domain_status)
-         VALUES (':name', ':gender', ':address', ':mobile_number', ':date_of_birth', ,1);
+         VALUES (':name', ':gender', ':address', ':mobile_number', ':date_of_birth', ':image_path',1);
         ");
     }
 
